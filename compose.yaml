@@ -1,0 +1,108 @@
+services:
+  rabbitmq:
+    hostname: sensor-flow-rabbitmq
+    build:
+      context: .
+      dockerfile: docker/rabbitmq/Dockerfile
+    environment:
+      RABBITMQ_DEFAULT_USER: sensor_flow
+      RABBITMQ_DEFAULT_PASS: sensor_flow_dev
+    ports:
+      - "1883:1883"
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  config-manager:
+    build:
+      context: .
+      dockerfile: docker/config-manager.Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./volumes/config:/data/config
+    restart: unless-stopped
+
+  queue-manager:
+    build:
+      context: .
+      dockerfile: docker/queue-manager.Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      config-manager:
+        condition: service_started
+    restart: unless-stopped
+
+  raw-writer:
+    build:
+      context: .
+      dockerfile: docker/raw-writer.Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      config-manager:
+        condition: service_started
+      queue-manager:
+        condition: service_started
+    volumes:
+      - ./volumes/raw:/data/raw
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:17-bookworm
+    hostname: sensor-flow-postgres
+    environment:
+      POSTGRES_DB: sensor_flow
+      POSTGRES_USER: sensor_flow
+      POSTGRES_PASSWORD: sensor_flow_dev
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sensor_flow -d sensor_flow"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  db-writer:
+    build:
+      context: .
+      dockerfile: docker/db-writer.Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      config-manager:
+        condition: service_started
+      queue-manager:
+        condition: service_started
+    volumes:
+      - ./volumes/raw:/data/raw:ro
+    restart: unless-stopped
+
+  mqtt-ingress-relay:
+    build:
+      context: .
+      dockerfile: docker/mqtt-relay.Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      config-manager:
+        condition: service_started
+    restart: unless-stopped
+
+volumes:
+  rabbitmq-data:
+  postgres-data:

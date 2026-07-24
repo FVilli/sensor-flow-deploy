@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "channel": "stable",
+  "revision": 1,
+  "gitCommit": "398b1ed2eed5da3116624c4509eb7617997098b5",
+  "publishedAt": "2026-07-24T17:46:57+00:00",
+  "deployment": {
+    "compose": {
+      "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/compose.yaml",
+      "sha256": "16a5542f0aac08554c2c339b4de6b95861f830480136364590a57b2dea1a009c"
+    },
+    "updater": {
+      "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/update.sh",
+      "sha256": "eaf54d92d17ba1a54f836b35a6482c93671b0af1e9063955672010eee8d32f8b"
+    }
+  },
+  "services": {
+    "rabbitmq": {
+      "image": "ghcr.io/fvilli/sensor-flow-rabbitmq",
+      "digest": "sha256:d2a7b26c7d64a0c424406a0723f6bb4e73abd4519ce3f7c20eebf5413e377726"
+    },
+    "config-manager": {
+      "image": "ghcr.io/fvilli/sensor-flow-config-manager",
+      "digest": "sha256:780547e0c4c100c9f545beb902d56ddc095b3f16155f3bd9df30741992cae4f2"
+    },
+    "queue-manager": {
+      "image": "ghcr.io/fvilli/sensor-flow-queue-manager",
+      "digest": "sha256:b5c6ac936e0e37e33f88eb1db51ad2d938432992db95fc3f3fa995d65b2ed13b"
+    },
+    "mqtt-ingress-relay": {
+      "image": "ghcr.io/fvilli/sensor-flow-mqtt-ingress-relay",
+      "digest": "sha256:00c363b21edc48d8ebd7f4bf613df8a5bae48349b0ecd10508450c15c747f076"
+    },
+    "raw-writer": {
+      "image": "ghcr.io/fvilli/sensor-flow-raw-writer",
+      "digest": "sha256:d098374da2c18aa7f797b75ca7ef4e3f94319b97798f0ff3dbaf2d4cd17f07f4"
+    },
+    "db-writer": {
+      "image": "ghcr.io/fvilli/sensor-flow-db-writer",
+      "digest": "sha256:47ced586e624e2f7342b4b167b50b239c35cfee3315297836379e88c3e11eb91"
+    }
+  }
+}

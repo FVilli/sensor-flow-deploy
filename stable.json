@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "channel": "stable",
-  "revision": 3,
-  "gitCommit": "dd659af967f1477ab78f28e5548632dc8eda1bfb",
-  "publishedAt": "2026-07-24T18:26:32+00:00",
+  "revision": 4,
+  "gitCommit": "038839d40df579cc45a5dcaf28c35964d2c297f0",
+  "publishedAt": "2026-07-24T18:29:47+00:00",
   "deployment": {
     "compose": {
       "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/compose.yaml",

@@ -167,10 +167,6 @@ for service in "${expected_services[@]}"; do
   [[ "$desired_ref" != "$applied_ref" ]] && changed+=("$service")
 done
 
-if [[ "$compose_changed" == true ]]; then
-  changed=("${expected_services[@]}")
-fi
-
 install_state() {
   if [[ "$updater_changed" == true ]]; then
     install -m 755 "$candidate_updater" "${install_root}/scripts/.update.sh.new"
@@ -180,20 +176,21 @@ install_state() {
   mv "${state_root}/.applied.json.new" "$applied_manifest"
 }
 
-if [[ ${#changed[@]} -eq 0 ]]; then
+if [[ ${#changed[@]} -eq 0 && "$compose_changed" == false ]]; then
   install_state
   echo "Recorded Sensor Flow revision ${desired_revision}; image set unchanged"
   exit 0
 fi
 
-compose_candidate=(
-  docker compose
-  -f "$candidate_compose"
-  -f "$candidate_override"
-)
-
-echo "Pulling changed services: ${changed[*]}"
-"${compose_candidate[@]}" pull "${changed[@]}"
+if [[ ${#changed[@]} -gt 0 ]]; then
+  compose_candidate=(
+    docker compose
+    -f "$candidate_compose"
+    -f "$candidate_override"
+  )
+  echo "Pulling changed services: ${changed[*]}"
+  "${compose_candidate[@]}" pull "${changed[@]}"
+fi
 
 rollback_override="${work_root}/previous-compose.release.yaml"
 rollback_manifest="${work_root}/previous-applied.json"
@@ -216,8 +213,10 @@ compose=(
   -f "$override_file"
 )
 
-echo "Applying Sensor Flow revision ${desired_revision}: ${changed[*]}"
+echo "Applying Sensor Flow revision ${desired_revision}"
 if [[ "$had_previous" == false ]]; then
+  apply_command=("${compose[@]}" up -d --no-build --remove-orphans --wait --wait-timeout 120)
+elif [[ "$compose_changed" == true ]]; then
   apply_command=("${compose[@]}" up -d --no-build --remove-orphans --wait --wait-timeout 120)
 else
   apply_command=("${compose[@]}" up -d --no-build --no-deps --wait --wait-timeout 120 "${changed[@]}")
@@ -238,10 +237,17 @@ fi
 cp "$rollback_override" "$override_file"
 cp "$rollback_manifest" "$applied_manifest"
 cp "$rollback_compose" "${install_root}/compose.yaml"
-docker compose \
-  -f "${install_root}/compose.yaml" \
-  -f "$override_file" \
-  up -d --no-build --no-deps --wait --wait-timeout 120 \
-  "${changed[@]}"
+if [[ "$compose_changed" == true ]]; then
+  docker compose \
+    -f "${install_root}/compose.yaml" \
+    -f "$override_file" \
+    up -d --no-build --remove-orphans --wait --wait-timeout 120
+else
+  docker compose \
+    -f "${install_root}/compose.yaml" \
+    -f "$override_file" \
+    up -d --no-build --no-deps --wait --wait-timeout 120 \
+    "${changed[@]}"
+fi
 echo "Previous service digests restored" >&2
 exit 1

@@ -83,6 +83,9 @@ expected_services=("${required_services[@]}")
 if jq -e '.services.grafana' "$desired_manifest" >/dev/null; then
   expected_services+=(grafana)
 fi
+if jq -e '.services."node-api"' "$desired_manifest" >/dev/null; then
+  expected_services+=(node-api)
+fi
 
 for service in "${expected_services[@]}"; do
   jq -e \

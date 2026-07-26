@@ -66,7 +66,7 @@ scaricabile. Una nuova immagine privata non può quindi diventare una revisione
 2. configurare nel repository sorgente il secret
    `DEPLOYMENT_REPOSITORY_SSH_KEY`, contenente una deploy key con scrittura
    limitata al solo repository pubblico;
-3. dopo la prima pubblicazione, rendere pubblici i sette package GHCR;
+3. dopo la prima pubblicazione, rendere pubblici gli otto package GHCR;
 4. verificare che `stable.json` e le immagini siano scaricabili anonimamente.
 
 La pubblicazione dei package deve essere cambiata a pubblica una sola volta per

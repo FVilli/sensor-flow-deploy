@@ -133,8 +133,11 @@ systemctl --user list-timers sensor-flow-update.timer
 jq '{revision, gitCommit}' .sensor-flow/applied.json
 ```
 
-RabbitMQ, PostgreSQL e Grafana devono risultare `healthy`; gli altri servizi
-`running`.
+RabbitMQ, PostgreSQL, Grafana e `node-api` devono risultare `healthy`; gli altri
+servizi `running`.
+
+Il primo avvio genera `volumes/config/node-api.token` con permessi `600`. È un
+segreto bootstrap da includere nel backup protetto e da non stampare nei log.
 
 Log e code:
 
@@ -208,6 +211,7 @@ Un aggiornamento ordinario non deve eliminare queste risorse.
 - [ ] Nessun clone e nessuna credenziale GitHub sull'istanza.
 - [ ] Bootstrap protetto con permessi `700`.
 - [ ] `env.json` valido e protetto con permessi `600`.
+- [ ] `node-api.token` presente e protetto con permessi `600`.
 - [ ] `stable.json` raggiungibile senza autenticazione.
 - [ ] Immagini GHCR scaricabili senza login.
 - [ ] Stack sano e primo dato acquisito.

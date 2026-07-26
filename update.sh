@@ -89,6 +89,9 @@ fi
 if jq -e '.services."health-probe-system"' "$desired_manifest" >/dev/null; then
   expected_services+=(health-probe-system)
 fi
+if jq -e '.services."health-agent"' "$desired_manifest" >/dev/null; then
+  expected_services+=(health-agent)
+fi
 
 for service in "${expected_services[@]}"; do
   jq -e \

@@ -167,6 +167,21 @@ services:
       - ./volumes/config:/data/config:ro
     restart: unless-stopped
 
+  health-agent:
+    build:
+      context: .
+      dockerfile: docker/health-agent.Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      config-manager:
+        condition: service_started
+      queue-manager:
+        condition: service_started
+      health-probe-system:
+        condition: service_started
+    restart: unless-stopped
+
   mqtt-ingress-relay:
     build:
       context: .

@@ -34,6 +34,7 @@ completo.
 - `libs/raw-contracts`: `raw-writer` e `db-writer`;
 - package lock, package root o TypeScript config: tutti i servizi Node.js;
 - configurazione RabbitMQ: `rabbitmq`;
+- dashboard, provisioning o Dockerfile Grafana: `grafana`;
 - prima pubblicazione: tutte le immagini.
 
 Il manifest usa esclusivamente riferimenti immutabili:
@@ -59,7 +60,7 @@ Il manifest usa esclusivamente riferimenti immutabili:
 2. configurare nel repository sorgente il secret
    `DEPLOYMENT_REPOSITORY_SSH_KEY`, contenente una deploy key con scrittura
    limitata al solo repository pubblico;
-3. dopo la prima pubblicazione, rendere pubblici i sei package GHCR;
+3. dopo la prima pubblicazione, rendere pubblici i sette package GHCR;
 4. verificare che `stable.json` e le immagini siano scaricabili anonimamente.
 
 La pubblicazione dei package deve essere cambiata a pubblica una sola volta per

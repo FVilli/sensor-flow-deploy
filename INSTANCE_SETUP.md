@@ -133,7 +133,8 @@ systemctl --user list-timers sensor-flow-update.timer
 jq '{revision, gitCommit}' .sensor-flow/applied.json
 ```
 
-RabbitMQ e PostgreSQL devono risultare `healthy`; gli altri servizi `running`.
+RabbitMQ, PostgreSQL e Grafana devono risultare `healthy`; gli altri servizi
+`running`.
 
 Log e code:
 
@@ -146,6 +147,16 @@ docker compose -f compose.yaml -f compose.release.yaml exec rabbitmq \
 ```
 
 Con i writer attivi, le code devono normalmente tornare a zero.
+
+Grafana è esposto soltanto su localhost. Da una workstation aprire un tunnel:
+
+```bash
+ssh -L 3000:127.0.0.1:3000 federico@server
+```
+
+Aprire quindi `http://localhost:3000` e usare le credenziali iniziali M2A
+`admin` / `sensor_flow_admin_dev`. Autenticazione e utenze cliente verranno
+introdotte nella milestone successiva.
 
 ## 6. Verificare i dati
 
@@ -185,6 +196,7 @@ volumes/config/
 volumes/raw/
 volume Docker PostgreSQL
 volume Docker RabbitMQ
+volume Docker Grafana
 ```
 
 Un aggiornamento ordinario non deve eliminare queste risorse.

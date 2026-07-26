@@ -9,7 +9,7 @@ readonly state_root="${install_root}/.sensor-flow"
 readonly applied_manifest="${state_root}/applied.json"
 readonly override_file="${install_root}/compose.release.yaml"
 readonly lock_file="${state_root}/update.lock"
-readonly expected_services=(
+readonly required_services=(
   rabbitmq
   config-manager
   queue-manager
@@ -78,6 +78,11 @@ jq -e '
   and (.deployment.updater.sha256 | test("^[0-9a-f]{64}$"))
   and (.services | type == "object")
 ' "$desired_manifest" >/dev/null
+
+expected_services=("${required_services[@]}")
+if jq -e '.services.grafana' "$desired_manifest" >/dev/null; then
+  expected_services+=(grafana)
+fi
 
 for service in "${expected_services[@]}"; do
   jq -e \

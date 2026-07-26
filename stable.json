@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "channel": "stable",
-  "revision": 6,
-  "gitCommit": "c92e5fbcefe72f90fb3a8c422400134a050d30f4",
-  "publishedAt": "2026-07-26T11:50:29+00:00",
+  "revision": 7,
+  "gitCommit": "6d26857370046146ecd1f7c6d4c966c91295feda",
+  "publishedAt": "2026-07-26T12:38:41+00:00",
   "deployment": {
     "compose": {
       "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/compose.yaml",
-      "sha256": "ef6febc21de982643dd6d0769dfe4f36039e10aacc2f66e9035ec3dc01857d55"
+      "sha256": "17b6f667c115cab02ac826cde88bfd84efc9629185f692fb47344bddad0e0ebb"
     },
     "updater": {
       "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/update.sh",
@@ -37,7 +37,11 @@
     },
     "db-writer": {
       "image": "ghcr.io/fvilli/sensor-flow-db-writer",
-      "digest": "sha256:47ced586e624e2f7342b4b167b50b239c35cfee3315297836379e88c3e11eb91"
+      "digest": "sha256:39fddc746b79c79c9e8710ddd340f5dc4df422d830f0501ec5452472b69545dd"
+    },
+    "grafana": {
+      "image": "ghcr.io/fvilli/sensor-flow-grafana",
+      "digest": "sha256:51f0d7621078cf76557f4ee3f543b40ce63d087ffdd7714b69a81ffd529f4c2e"
     }
   }
 }

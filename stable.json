@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
   "channel": "stable",
-  "revision": 12,
-  "gitCommit": "c27f09ed4476734e43ff2283d1892956f180582e",
-  "publishedAt": "2026-07-26T17:32:14+00:00",
+  "revision": 13,
+  "gitCommit": "890f887ae35495cc6d8ce23708d82db75fda95ac",
+  "publishedAt": "2026-07-26T17:56:46+00:00",
   "deployment": {
     "compose": {
       "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/compose.yaml",
-      "sha256": "19cb70b1d891b6398dadcfe6506435e842d75052877c28286d1911841456dfbe"
+      "sha256": "4288a7deadc0a8e48126f4d8718d6ca54cf1e4455a37d00d364fc1d965973aaa"
     },
     "updater": {
       "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/update.sh",
-      "sha256": "aa16f7d012e6dc370d7126c1f4a69965a99de5437badcdef6c7a3e0a35e8c03c"
+      "sha256": "8806972b638413f3110132f7f53eee90ac591163268f6c6cd5c7470e754fd79a"
     }
   },
   "services": {
@@ -21,23 +21,23 @@
     },
     "config-manager": {
       "image": "ghcr.io/fvilli/sensor-flow-config-manager",
-      "digest": "sha256:0dde94f536d16d00f39642dee62bb03948be6ac2bfe23454f3f9d51102da89dd"
+      "digest": "sha256:e1be2db1b8d7fec9ab52b321051d8c8f82387ac5d600fd4bde6eb62c21a0440d"
     },
     "queue-manager": {
       "image": "ghcr.io/fvilli/sensor-flow-queue-manager",
-      "digest": "sha256:c22b895a70f7ce0bcb4ecfd159788120712bb4898a1ee499824b920056420ee8"
+      "digest": "sha256:2814adb9c2d315b38cc3554cc97bdc09954c635d419707273f5e8f59e4e53664"
     },
     "mqtt-ingress-relay": {
       "image": "ghcr.io/fvilli/sensor-flow-mqtt-ingress-relay",
-      "digest": "sha256:38ff5f67d11c77c13ece0e6bf4359c715cc67dc1fe03996313299c6709c0ca44"
+      "digest": "sha256:c596344036fadddf5e4e1d79100ea565fbaade4400c9ec986629f54f13a97413"
     },
     "raw-writer": {
       "image": "ghcr.io/fvilli/sensor-flow-raw-writer",
-      "digest": "sha256:b5e187bea95c6bca44d4693b31b68611ee554caecafca3a800f68a390898aada"
+      "digest": "sha256:9f4f5b7d20463a62ac48f2e1ad74df3d88b70edb8b2909dd11cce787fdc13a9f"
     },
     "db-writer": {
       "image": "ghcr.io/fvilli/sensor-flow-db-writer",
-      "digest": "sha256:ec0a209e06bf9744ddee355e92bfe4ff8c5de6972d42e2259d29860a428a95bf"
+      "digest": "sha256:db523417babe8ad0a4eeb2a94d2bcff12c73d58996e2ebb4c561990d2504e577"
     },
     "grafana": {
       "image": "ghcr.io/fvilli/sensor-flow-grafana",
@@ -45,11 +45,11 @@
     },
     "node-api": {
       "image": "ghcr.io/fvilli/sensor-flow-node-api",
-      "digest": "sha256:8fcb0e078671f02a402408b0f1a05305d1de1e45a9ff8bf846cdcbb4c068cdcc"
+      "digest": "sha256:b2f1725ef261c691557a3cb3854aba73ee1dfe246145073a93a58f9fcef5647f"
     },
-    "health-local-system": {
-      "image": "ghcr.io/fvilli/sensor-flow-health-local-system",
-      "digest": "sha256:891cb738ea2f414404eab41b3314ffc5f4448a163b95d8db23333f99e603a28f"
+    "health-probe-system": {
+      "image": "ghcr.io/fvilli/sensor-flow-health-probe-system",
+      "digest": "sha256:a32f5c7f54689c0224c1037017789acfd813d14bdbfe5197e25f50c79ced53b3"
     }
   }
 }

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "channel": "stable",
-  "revision": 14,
-  "gitCommit": "a794505853116b912acc3a6c42c92fe3ce925a64",
-  "publishedAt": "2026-07-26T18:27:02+00:00",
+  "revision": 15,
+  "gitCommit": "d66488dfca0658b1afc662053556a195adf6f8f2",
+  "publishedAt": "2026-07-26T18:33:01+00:00",
   "deployment": {
     "compose": {
       "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/compose.yaml",
@@ -21,7 +21,7 @@
     },
     "config-manager": {
       "image": "ghcr.io/fvilli/sensor-flow-config-manager",
-      "digest": "sha256:49a96187e5ed3fd7fd221731a4fcc52b7be15728d1221f824ee687fdd7399cde"
+      "digest": "sha256:4424fd5c6a1cb0c7599d93fa66b1ffb63781aa75c64b62c2a1412ae2e4026d8e"
     },
     "queue-manager": {
       "image": "ghcr.io/fvilli/sensor-flow-queue-manager",
@@ -33,11 +33,11 @@
     },
     "raw-writer": {
       "image": "ghcr.io/fvilli/sensor-flow-raw-writer",
-      "digest": "sha256:ce376d4440d684e0aa03780632666d90e152544e76ce47186a059b63fa33032a"
+      "digest": "sha256:32a60f145736448504216c7244edfc834be6b9d930698dbfc9f7b5519f91e32e"
     },
     "db-writer": {
       "image": "ghcr.io/fvilli/sensor-flow-db-writer",
-      "digest": "sha256:c0081e343a629cecd85ca54bbdadcf8fdf32711ab4394132ccc625ca83b93598"
+      "digest": "sha256:ebe0f1eaa84101491d48c49ddc7aa0a1e44e848fbaab3b28e759931a57e32b81"
     },
     "grafana": {
       "image": "ghcr.io/fvilli/sensor-flow-grafana",
@@ -49,11 +49,11 @@
     },
     "health-probe-system": {
       "image": "ghcr.io/fvilli/sensor-flow-health-probe-system",
-      "digest": "sha256:2b980a6afd11907a7ac95cc738b78046e2bce778b7954a2ca9091449cf24c940"
+      "digest": "sha256:bf0288f1329f948b45f0111196099b49dc2a744efb3fa0e4cfb3da0bbfecf11d"
     },
     "health-agent": {
       "image": "ghcr.io/fvilli/sensor-flow-health-agent",
-      "digest": "sha256:f347ebebdeeda6cebb05aca6dee4b89f7d62e463a8718e9789b8d292aec9a248"
+      "digest": "sha256:b1d8eab06d7fd7b80f69a353f7eabcc6274bdeae74eb3a7645970f5314a99326"
     }
   }
 }

@@ -86,6 +86,9 @@ fi
 if jq -e '.services."node-api"' "$desired_manifest" >/dev/null; then
   expected_services+=(node-api)
 fi
+if jq -e '.services."health-local-system"' "$desired_manifest" >/dev/null; then
+  expected_services+=(health-local-system)
+fi
 
 for service in "${expected_services[@]}"; do
   jq -e \

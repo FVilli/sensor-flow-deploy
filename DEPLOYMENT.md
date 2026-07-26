@@ -17,7 +17,8 @@ Un push su `main` pubblica soltanto quando il messaggio del commit di testa cont
 3. confronta il suo `gitCommit` con il commit della release;
 4. costruisce soltanto le immagini interessate dalle modifiche;
 5. conserva i digest precedenti degli altri servizi;
-6. pubblica asset e nuovo manifest nel repository pubblico.
+6. verifica il pull anonimo di ogni immagine candidata;
+7. pubblica asset e nuovo manifest nel repository pubblico.
 
 Il push del repository pubblico aggiorna il riferimento Git in modo atomico. Il
 manifest è preparato dopo gli asset e diventa quindi visibile insieme allo stato
@@ -53,6 +54,11 @@ Il manifest usa esclusivamente riferimenti immutabili:
   }
 }
 ```
+
+La pipeline interrompe la pubblicazione prima di aggiornare `stable.json` se anche
+una sola immagine non concede un token GHCR anonimo o il relativo digest non è
+scaricabile. Una nuova immagine privata non può quindi diventare una revisione
+`stable`.
 
 ## Prerequisiti una tantum su GitHub
 

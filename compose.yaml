@@ -167,6 +167,32 @@ services:
       - ./volumes/config:/data/config:ro
     restart: unless-stopped
 
+  health-probe-rabbitmq:
+    build:
+      context: .
+      dockerfile: docker/health-probe-rabbitmq.Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      config-manager:
+        condition: service_started
+    restart: unless-stopped
+
+  health-probe-postgres:
+    build:
+      context: .
+      dockerfile: docker/health-probe-postgres.Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      config-manager:
+        condition: service_started
+      db-writer:
+        condition: service_started
+    restart: unless-stopped
+
   health-agent:
     build:
       context: .
@@ -179,6 +205,10 @@ services:
       queue-manager:
         condition: service_started
       health-probe-system:
+        condition: service_started
+      health-probe-rabbitmq:
+        condition: service_started
+      health-probe-postgres:
         condition: service_started
     restart: unless-stopped
 

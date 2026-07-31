@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "channel": "stable",
-  "revision": 16,
-  "gitCommit": "6d888ae361f0ea9f57c693e7673ae60a25dc2ec5",
-  "publishedAt": "2026-07-27T23:09:22+00:00",
+  "revision": 17,
+  "gitCommit": "151c5185330a82f4f2e82e772db16a3f54f6adc8",
+  "publishedAt": "2026-07-31T13:25:13+00:00",
   "deployment": {
     "compose": {
       "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/compose.yaml",
@@ -41,7 +41,7 @@
     },
     "grafana": {
       "image": "ghcr.io/fvilli/sensor-flow-grafana",
-      "digest": "sha256:a8873af70ae9ad688c4d8cbedb6f529afb239b310b078664a6b490894ee20f66"
+      "digest": "sha256:9f21d9b924ec4296db1cc1022b5cee764f0133d2b0bb3bf3bbd26875bbd30442"
     },
     "node-api": {
       "image": "ghcr.io/fvilli/sensor-flow-node-api",

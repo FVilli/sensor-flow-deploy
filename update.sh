@@ -89,6 +89,12 @@ fi
 if jq -e '.services."health-probe-system"' "$desired_manifest" >/dev/null; then
   expected_services+=(health-probe-system)
 fi
+if jq -e '.services."health-probe-rabbitmq"' "$desired_manifest" >/dev/null; then
+  expected_services+=(health-probe-rabbitmq)
+fi
+if jq -e '.services."health-probe-postgres"' "$desired_manifest" >/dev/null; then
+  expected_services+=(health-probe-postgres)
+fi
 if jq -e '.services."health-agent"' "$desired_manifest" >/dev/null; then
   expected_services+=(health-agent)
 fi

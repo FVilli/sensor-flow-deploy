@@ -16,6 +16,7 @@ readonly required_services=(
   mqtt-ingress-relay
   raw-writer
   db-writer
+  db-writer-migrate
 )
 
 require_command() {
@@ -85,6 +86,9 @@ if jq -e '.services.grafana' "$desired_manifest" >/dev/null; then
 fi
 if jq -e '.services."node-api"' "$desired_manifest" >/dev/null; then
   expected_services+=(node-api)
+fi
+if jq -e '.services."admin-api"' "$desired_manifest" >/dev/null; then
+  expected_services+=(admin-api)
 fi
 if jq -e '.services."health-probe-system"' "$desired_manifest" >/dev/null; then
   expected_services+=(health-probe-system)

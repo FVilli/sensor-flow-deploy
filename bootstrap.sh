@@ -4,19 +4,10 @@ set -Eeuo pipefail
 
 readonly DEFAULT_INSTALL_ROOT="${HOME}/sensor-flow"
 readonly DEFAULT_DEPLOYMENT_BASE_URL="https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main"
-readonly script_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-readonly log_file="${script_root}/sensor-flow-bootstrap.log"
-
-touch "$log_file"
-chmod 600 "$log_file"
-exec > >(tee -a "$log_file") 2>&1
-
-echo
-echo "[$(date --iso-8601=seconds)] Sensor Flow bootstrap started"
 
 usage() {
   cat <<'EOF'
-Usage: sensor-flow-bootstrap.sh [installation-root]
+Usage: bootstrap.sh [installation-root]
 
 Environment:
   SENSOR_FLOW_ENV_FILE            Path to the instance env.json
@@ -41,6 +32,18 @@ readonly deployment_base_url="${SENSOR_FLOW_DEPLOYMENT_BASE_URL:-$DEFAULT_DEPLOY
   exit 1
 }
 
+# Il log vive dentro install_root: nessun file di sensor-flow deve restare
+# sparso altrove sul filesystem dell'istanza.
+mkdir -p "$install_root"
+readonly log_file="${install_root}/sensor-flow-bootstrap.log"
+
+touch "$log_file"
+chmod 600 "$log_file"
+exec > >(tee -a "$log_file") 2>&1
+
+echo
+echo "[$(date --iso-8601=seconds)] Sensor Flow bootstrap started"
+
 require_command() {
   command -v "$1" >/dev/null 2>&1 || {
     echo "Missing required command: $1" >&2
@@ -63,7 +66,6 @@ done
 jq empty "$environment_file"
 docker compose version >/dev/null
 
-mkdir -p "$install_root"
 work_root="$(mktemp -d)"
 trap 'rm -rf "$work_root"' EXIT
 

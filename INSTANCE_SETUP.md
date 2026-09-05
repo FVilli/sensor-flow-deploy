@@ -1,80 +1,54 @@
 # Setup di una nuova istanza Sensor Flow
 
+## TL;DR
+
+- `prepare.sh` prepara l'istanza: crea le directory sotto
+  `$HOME/sensor-flow` e, se manca, scrive un modello di `env.json` da compilare.
+- Si compila `env.json` con i dati reali del broker MQTT.
+- `bootstrap.sh` installa e avvia davvero lo stack, leggendo quel
+  `env.json`.
+- Risultato: un'istanza funzionante interamente contenuta in
+  `$HOME/sensor-flow/` (configurazione, RAW, log di bootstrap, doc operative) —
+  nessun file di sensor-flow sparso altrove sul server, a parte l'unità
+  systemd utente (`~/.config/systemd/user/`), obbligata dalla sua posizione
+  standard.
+
 Questa guida installa Sensor Flow senza clonare il repository e senza credenziali
 GitHub persistenti. Le immagini e il manifest del canale `stable` sono pubblici.
 
-L'esempio assume Ubuntu Server 24.04 LTS, utente `federico` e installazione in:
-
-```text
-/home/federico/sensor-flow
-```
+Gli esempi usano `$USER` e `$HOME` dell'utente che esegue l'installazione;
+l'installazione finisce in `$HOME/sensor-flow`.
 
 ## 1. Prerequisiti
 
-L'istanza deve raggiungere in uscita:
+- l'istanza deve raggiungere in uscita `raw.githubusercontent.com:443`,
+  `ghcr.io:443` e il broker MQTT sorgente (normalmente `8883/TCP`);
+- Docker Engine e il plugin Compose installati, utente nel gruppo `docker`;
+- clock sincronizzato (NTP).
 
-| Destinazione | Porta | Utilizzo |
-|---|---:|---|
-| `raw.githubusercontent.com` | 443/TCP | manifest e script pubblici |
-| `ghcr.io` | 443/TCP | immagini pubbliche |
-| broker MQTT sorgenti | normalmente 8883/TCP | acquisizione |
-| DNS e NTP | secondo infrastruttura | risoluzione e clock |
+Se Docker non è già installato, vedere l'appendice
+[Docker](#appendice-installare-docker). Avahi è opzionale e utile soltanto per
+istanze raggiungibili direttamente sulla rete locale.
 
-Installare Docker Engine con Compose e:
+## 2. Preparazione
 
-```bash
-sudo apt update
-sudo apt install curl jq acl ca-certificates
-sudo usermod -aG docker "$USER"
-```
-
-Dopo una nuova sessione verificare:
+Non serve avere il repository sorgente in locale. Sull'istanza:
 
 ```bash
-docker version
-docker compose version
-docker run --rm hello-world
-timedatectl status
+curl -fsSL https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/prepare.sh \
+  | bash -s -- "$HOME/sensor-flow"
 ```
 
-Il clock deve essere sincronizzato. L'utente nel gruppo `docker` possiede
-privilegi sostanzialmente amministrativi sulla macchina.
+Lo script è idempotente e:
 
-## 2. Copiare il bootstrap
+- crea le directory richieste sotto `$HOME/sensor-flow`;
+- se `volumes/config/env.json` non esiste, scrive un modello con i campi da
+  compilare (`CHANGE_ME`) e stampa il percorso esatto da modificare;
+- se `volumes/config/env.json` esiste già, lo lascia invariato e ne verifica
+  solo la validità JSON.
 
-Da una macchina che contiene il progetto:
-
-```bash
-scp scripts/sensor-flow-bootstrap.sh \
-  federico@INSTANCE:/home/federico/sensor-flow-bootstrap.sh
-```
-
-Sul server:
-
-```bash
-chmod 700 /home/federico/sensor-flow-bootstrap.sh
-```
-
-Non servono Git, GitHub CLI, token o `docker login`. Il bootstrap scrive il proprio
-log append-only in `/home/federico/sensor-flow-bootstrap.log` con permessi `600`.
-
-## 3. Preparare la configurazione
-
-Copiare la configurazione reale senza mostrarne il contenuto:
-
-```bash
-scp volumes/config/env.json \
-  federico@INSTANCE:/home/federico/sensor-flow-env.json
-```
-
-Sul server:
-
-```bash
-chmod 600 /home/federico/sensor-flow-env.json
-jq empty /home/federico/sensor-flow-env.json
-```
-
-La struttura è:
+Modificare quindi `$HOME/sensor-flow/volumes/config/env.json` con le credenziali
+reali del broker MQTT. La struttura è:
 
 ```json
 {
@@ -99,20 +73,34 @@ La struttura è:
 }
 ```
 
-## 4. Installare
+Verificare il JSON e i permessi dopo la modifica:
 
 ```bash
-export SENSOR_FLOW_ENV_FILE=/home/federico/sensor-flow-env.json
-/home/federico/sensor-flow-bootstrap.sh
-unset SENSOR_FLOW_ENV_FILE
+chmod 600 "$HOME/sensor-flow/volumes/config/env.json"
+jq empty "$HOME/sensor-flow/volumes/config/env.json"
 ```
+
+## 3. Installare
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/bootstrap.sh \
+  | SENSOR_FLOW_ENV_FILE="$HOME/sensor-flow/volumes/config/env.json" bash -s -- "$HOME/sensor-flow"
+```
+
+Il secondo argomento posizionale dopo `--` è la directory di installazione; se
+omesso viene usato `~/sensor-flow`. Non servono Git, GitHub CLI, token o
+`docker login`, né salvare lo script su disco: viene eseguito direttamente dallo
+stream `curl`. Usare `bash`, non `sh`: lo script richiede sintassi Bash. Il
+bootstrap scrive il proprio log append-only in
+`$HOME/sensor-flow/sensor-flow-bootstrap.log` con permessi `600`.
 
 Non si passa una versione: viene applicata la revisione corrente di `stable`.
 Il bootstrap è idempotente e:
 
 - verifica i checksum degli asset pubblici;
 - installa Compose e updater;
-- installa `env.json` senza sovrascriverlo se identico;
+- installa `env.json` senza sovrascriverlo se identico (già il caso, dato che
+  punta allo stesso file preparato al passo precedente);
 - scarica le immagini indicate per digest;
 - avvia lo stack;
 - abilita `sensor-flow-update.timer`.
@@ -120,24 +108,22 @@ Il bootstrap è idempotente e:
 Per mantenere il timer utente attivo anche dopo il logout:
 
 ```bash
-sudo loginctl enable-linger federico
+sudo loginctl enable-linger "$USER"
 ```
 
-## 5. Verificare
+## 4. Verificare
 
 ```bash
-cd /home/federico/sensor-flow
+cd "$HOME/sensor-flow"
 docker compose -f compose.yaml -f compose.release.yaml ps
 systemctl --user status sensor-flow-update.timer
 systemctl --user list-timers sensor-flow-update.timer
 jq '{revision, gitCommit}' .sensor-flow/applied.json
 ```
 
-RabbitMQ, PostgreSQL, Grafana e `node-api` devono risultare `healthy`; gli altri
-servizi `running`.
-
-Il primo avvio genera `volumes/config/node-api.token` con permessi `600`. È un
-segreto bootstrap da includere nel backup protetto e da non stampare nei log.
+RabbitMQ, PostgreSQL e Grafana devono risultare `healthy`; gli altri servizi
+`running` (`db-writer-migrate` termina con successo ed esce, non resta
+`running`: è un passo one-shot che precede `db-writer`).
 
 Log e code:
 
@@ -151,17 +137,41 @@ docker compose -f compose.yaml -f compose.release.yaml exec rabbitmq \
 
 Con i writer attivi, le code devono normalmente tornare a zero.
 
-Grafana è esposto soltanto su localhost. Da una workstation aprire un tunnel:
+Grafana ascolta soltanto sul loopback dell'istanza. Da una workstation aprire un
+tunnel SSH:
 
 ```bash
-ssh -L 3000:127.0.0.1:3000 federico@server
+ssh -L 3000:127.0.0.1:3000 utente@istanza
 ```
 
 Aprire quindi `http://localhost:3000` e usare le credenziali iniziali M2A
 `admin` / `sensor_flow_admin_dev`. Autenticazione e utenze cliente verranno
-introdotte nella milestone successiva.
+introdotte nella milestone successiva. Un'esposizione tramite reverse proxy deve
+essere configurata esplicitamente con TLS e autenticazione adeguata.
 
-## 6. Verificare i dati
+`node-api` oggi non fa parte dello stack installato da questa guida. Quando verrà
+abilitato, possiederà le proprie migrazioni e genererà al primo avvio il token
+bootstrap in `volumes/config/node-api.token`; il token non appartiene a
+`env.json`. La web app di amministrazione basata su `admin-api` arriverà in un
+secondo momento.
+
+Fino alla versione maggiore 1, PostgreSQL è esposto soltanto sul loopback
+dell'istanza come supporto a debug e operatività iniziale:
+
+```text
+127.0.0.1:5433 -> postgres:5432
+```
+
+Da una workstation usare un tunnel dedicato:
+
+```bash
+ssh -L 5433:127.0.0.1:5433 utente@istanza
+```
+
+Poi configurare lo strumento SQL con host `localhost`, porta `5433`, database
+`sensor_flow`, utente `sensor_flow` e password di sviluppo `sensor_flow_dev`.
+
+## 5. Verificare i dati
 
 ```bash
 find volumes/raw -type f | sort | tail
@@ -174,7 +184,7 @@ docker compose -f compose.yaml -f compose.release.yaml exec postgres \
 Per il broker `fvsg`, la root RAW è `volumes/raw/fvsg/...` e la sorgente database è
 `mqtt:fvsg`.
 
-## 7. Aggiornamenti automatici
+## 6. Aggiornamenti automatici
 
 Ogni minuto il timer confronta `stable.json` con `.sensor-flow/applied.json`. Se è
 cambiato soltanto `db-writer`, scarica e riconcilia soltanto `db-writer`.
@@ -182,15 +192,15 @@ cambiato soltanto `db-writer`, scarica e riconcilia soltanto `db-writer`.
 Controllo manuale:
 
 ```bash
-SENSOR_FLOW_ROOT=/home/federico/sensor-flow \
-  /home/federico/sensor-flow/scripts/update.sh
+SENSOR_FLOW_ROOT="$HOME/sensor-flow" \
+  "$HOME/sensor-flow/scripts/update.sh"
 
 journalctl --user -u sensor-flow-update.service
 ```
 
 Non occorrono token, tag o interventi manuali.
 
-## 8. Dati da proteggere
+## 7. Dati da proteggere
 
 Eseguire backup coerenti di:
 
@@ -204,16 +214,81 @@ volume Docker Grafana
 
 Un aggiornamento ordinario non deve eliminare queste risorse.
 
-## 9. Checklist
+## 8. Checklist
 
 - [ ] Docker Engine e Compose disponibili.
 - [ ] Clock sincronizzato.
 - [ ] Nessun clone e nessuna credenziale GitHub sull'istanza.
-- [ ] Bootstrap protetto con permessi `700`.
-- [ ] `env.json` valido e protetto con permessi `600`.
-- [ ] `node-api.token` presente e protetto con permessi `600`.
+- [ ] `env.json` preparato, modificato con le credenziali reali e protetto con
+      permessi `600`.
 - [ ] `stable.json` raggiungibile senza autenticazione.
 - [ ] Immagini GHCR scaricabili senza login.
 - [ ] Stack sano e primo dato acquisito.
 - [ ] Timer abilitato e lingering attivo.
 - [ ] Aggiornamento selettivo verificato.
+
+## Appendice: installare Docker
+
+Eseguire:
+
+```bash
+sudo apt update
+sudo apt install -y ca-certificates curl jq acl
+curl -fsSL https://get.docker.com | sudo sh
+sudo usermod -aG docker "$USER"
+```
+
+Aprire una nuova sessione (l'appartenenza al gruppo `docker` non si applica
+altrimenti; equivale a privilegi root sulla macchina), poi eseguire:
+
+```bash
+docker run --rm hello-world
+docker compose version
+timedatectl show -p NTPSynchronized
+```
+
+Deve restituire:
+
+```text
+Hello from Docker!
+(seguito dal messaggio esplicativo del container hello-world)
+
+Docker Compose version v2.x.x
+
+NTPSynchronized=yes
+```
+
+Se `NTPSynchronized=no`, sincronizzare il clock prima di proseguire (es.
+`sudo timedatectl set-ntp true`).
+
+## Appendice: installare Avahi
+
+Eseguire:
+
+```bash
+sudo apt update
+sudo apt install -y avahi-daemon libnss-mdns
+sudo systemctl enable --now avahi-daemon
+```
+
+Verificare, dalla stessa istanza:
+
+```bash
+systemctl is-active avahi-daemon
+ping -c 1 "$(hostname).local"
+```
+
+Deve restituire:
+
+```text
+active
+
+PING nomepc.local (192.168.x.x) 56(84) bytes of data.
+64 bytes from nomepc.local (192.168.x.x): icmp_seq=1 ttl=64 time=0.05 ms
+```
+
+Se il `ping` fallisce da un'altra macchina della stessa rete, verificare che
+anche quella macchina supporti mDNS (macOS e la maggior parte delle
+distribuzioni Linux desktop lo supportano di serie; su Windows serve Bonjour o
+un client mDNS) e che non ci sia un firewall/isolamento client tra i
+dispositivi (es. AP wifi con "client isolation" attiva).

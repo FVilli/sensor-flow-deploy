@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "channel": "stable",
-  "revision": 20,
-  "gitCommit": "ef78259ce7c44294ac5e35f51608bd2ec76535ec",
-  "publishedAt": "2026-09-05T21:41:11+00:00",
+  "revision": 21,
+  "gitCommit": "8e3040348856943659209db63e07edc7a8a4ac7f",
+  "publishedAt": "2026-09-06T07:39:03+00:00",
   "sharedHash": "7260c66e744a8337817d64fc580a338b8225a03d22b6392b1917177498994a68",
   "deployment": {
     "compose": {
       "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/compose.yaml",
-      "sha256": "afa6282127602407f73f3b41e6e50a685c304436b2449d8e263d8938fd43a2a3"
+      "sha256": "c88d531408a237099538bdd6007095db1b30e00d09bb469455d1bc2c7d90a9b3"
     },
     "updater": {
       "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/update.sh",

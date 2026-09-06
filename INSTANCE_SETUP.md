@@ -137,6 +137,25 @@ docker compose -f compose.yaml -f compose.release.yaml exec rabbitmq \
 
 Con i writer attivi, le code devono normalmente tornare a zero.
 
+Lo stato `healthy` certifica il lifecycle del processo, non da solo l'avanzamento
+dei dati. Verificare anche che `db-writer` veda il bind mount RAW canonico e abbia
+scoperto almeno uno stream quando sono già presenti manifest `_stream.json`:
+
+```bash
+docker compose -f compose.yaml -f compose.release.yaml exec db-writer \
+  test -r /app/volumes/raw
+
+find volumes/raw -name _stream.json -print
+
+docker compose -f compose.yaml -f compose.release.yaml exec postgres \
+  psql -U sensor_flow -d sensor_flow \
+  -c "SELECT stream_key, classification_status, last_ingress_ts, last_processed_ts FROM raw_streams;"
+```
+
+Un manifest presente sul filesystem con `raw_streams` vuota indica che il
+verticale non è operativo, anche se il container risulta healthy. Controllare in
+tal caso mount, log e backlog prima di proseguire.
+
 Grafana ascolta soltanto sul loopback dell'istanza. Da una workstation aprire un
 tunnel SSH:
 
@@ -181,8 +200,8 @@ docker compose -f compose.yaml -f compose.release.yaml exec postgres \
   -c "SELECT source, sid, s_type, processed_through, observed_minute FROM sensors;"
 ```
 
-Per il broker `fvsg`, la root RAW è `volumes/raw/fvsg/...` e la sorgente database è
-`mqtt:fvsg`.
+Per il broker `fvsg`, la root RAW è `volumes/raw/mqtt/fvsg/...` e la sorgente
+database è `mqtt:fvsg`.
 
 ## 6. Aggiornamenti automatici
 
@@ -199,6 +218,17 @@ journalctl --user -u sensor-flow-update.service
 ```
 
 Non occorrono token, tag o interventi manuali.
+
+Per verificare un aggiornamento selettivo, registrare prima gli ID dei container,
+eseguire il controllo manuale sopra e confrontarli dopo l'applicazione:
+
+```bash
+docker compose -f compose.yaml -f compose.release.yaml ps -q
+```
+
+Una modifica del solo Compose non scarica nuove immagini. Compose riconcilia lo
+stack e ricrea soltanto i servizi la cui configurazione effettiva è cambiata; gli
+ID degli altri container devono restare invariati.
 
 ## 7. Dati da proteggere
 

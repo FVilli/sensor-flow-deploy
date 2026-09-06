@@ -162,7 +162,7 @@ services:
       timeout: 1s
       retries: 60
     volumes:
-      - ./volumes/raw:/data/raw:ro
+      - ./volumes/raw:/app/volumes/raw:ro
     restart: unless-stopped
 
 # node-api, admin-api, health-probe-system, health-probe-rabbitmq,

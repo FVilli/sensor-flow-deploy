@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "channel": "stable",
-  "revision": 24,
-  "gitCommit": "ef3d39c9fcb615ed68ab710e6215a9284ae85a93",
-  "publishedAt": "2026-09-07T17:06:32+00:00",
+  "revision": 25,
+  "gitCommit": "055e24d3d724e7b1dec3006320b4a77721a1c99f",
+  "publishedAt": "2026-09-07T17:20:57+00:00",
   "sharedHash": "18e7de38d75fabe26295c6a2c3203da786472373610a366a11314ff689bb8802",
   "deployment": {
     "strategy": "single-compose-stable",
@@ -54,8 +54,8 @@
     },
     "grafana": {
       "image": "ghcr.io/fvilli/sensor-flow-grafana",
-      "digest": "sha256:c07eb9e31924f79ede6b71acb9cac67b2297341362c1475194a11275121b92fd",
-      "appHash": "60bc61456e41040d4b6ecb7b73790fdf66b3218c7ae09b505d401033aab18a1a"
+      "digest": "sha256:1a9008f3ece0ea4c6381e4339aef0da2180fbd3cef3c776d87483b238d001301",
+      "appHash": "d77016d558aef573646cfa99c24d9e2b0739ead86956ecaf71d7cf59ba880b3c"
     }
   }
 }

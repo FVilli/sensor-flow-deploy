@@ -101,7 +101,7 @@ Il bootstrap è idempotente e:
 - installa Compose e updater;
 - installa `env.json` senza sovrascriverlo se identico (già il caso, dato che
   punta allo stesso file preparato al passo precedente);
-- scarica le immagini indicate per digest;
+- scarica le immagini `stable` e verifica la revisione tramite i digest del manifest;
 - avvia lo stack;
 - abilita `sensor-flow-update.timer`.
 
@@ -115,7 +115,7 @@ sudo loginctl enable-linger "$USER"
 
 ```bash
 cd "$HOME/sensor-flow"
-docker compose -f compose.yaml -f compose.release.yaml ps
+docker compose -f compose.yaml ps
 systemctl --user status sensor-flow-update.timer
 systemctl --user list-timers sensor-flow-update.timer
 jq '{revision, gitCommit}' .sensor-flow/applied.json
@@ -128,10 +128,10 @@ RabbitMQ, PostgreSQL e Grafana devono risultare `healthy`; gli altri servizi
 Log e code:
 
 ```bash
-docker compose -f compose.yaml -f compose.release.yaml logs \
+docker compose -f compose.yaml logs \
   config-manager queue-manager mqtt-ingress-relay raw-writer db-writer
 
-docker compose -f compose.yaml -f compose.release.yaml exec rabbitmq \
+docker compose -f compose.yaml exec rabbitmq \
   rabbitmqctl list_queues name messages_ready messages_unacknowledged consumers
 ```
 
@@ -142,12 +142,12 @@ dei dati. Verificare anche che `db-writer` veda il bind mount RAW canonico e abb
 scoperto almeno uno stream quando sono già presenti manifest `_stream.json`:
 
 ```bash
-docker compose -f compose.yaml -f compose.release.yaml exec db-writer \
+docker compose -f compose.yaml exec db-writer \
   test -r /app/volumes/raw
 
 find volumes/raw -name _stream.json -print
 
-docker compose -f compose.yaml -f compose.release.yaml exec postgres \
+docker compose -f compose.yaml exec postgres \
   psql -U sensor_flow -d sensor_flow \
   -c "SELECT stream_key, classification_status, last_ingress_ts, last_processed_ts FROM raw_streams;"
 ```
@@ -167,6 +167,11 @@ Aprire quindi `http://localhost:3000` e usare le credenziali iniziali M2A
 `admin` / `sensor_flow_admin_dev`. Autenticazione e utenze cliente verranno
 introdotte nella milestone successiva. Un'esposizione tramite reverse proxy deve
 essere configurata esplicitamente con TLS e autenticazione adeguata.
+
+Una guida opzionale descrive come
+[usare Traefik per esporre selettivamente i servizi](guides/traefik-service-exposure.md).
+Traefik e la relativa configurazione restano posseduti dall'host e non vengono
+applicati dall'updater Sensor Flow.
 
 `node-api` oggi non fa parte dello stack installato da questa guida. Quando verrà
 abilitato, possiederà le proprie migrazioni e genererà al primo avvio il token
@@ -195,7 +200,7 @@ Poi configurare lo strumento SQL con host `localhost`, porta `5433`, database
 ```bash
 find volumes/raw -type f | sort | tail
 
-docker compose -f compose.yaml -f compose.release.yaml exec postgres \
+docker compose -f compose.yaml exec postgres \
   psql -U sensor_flow -d sensor_flow \
   -c "SELECT source, sid, s_type, processed_through, observed_minute FROM sensors;"
 ```
@@ -223,12 +228,16 @@ Per verificare un aggiornamento selettivo, registrare prima gli ID dei container
 eseguire il controllo manuale sopra e confrontarli dopo l'applicazione:
 
 ```bash
-docker compose -f compose.yaml -f compose.release.yaml ps -q
+docker compose -f compose.yaml ps -q
 ```
 
 Una modifica del solo Compose non scarica nuove immagini. Compose riconcilia lo
 stack e ricrea soltanto i servizi la cui configurazione effettiva è cambiata; gli
 ID degli altri container devono restare invariati.
+
+Le installazioni aggiornate da una revisione precedente possono conservare un file
+legacy `compose.release.yaml`: l'updater lo ignora e l'operatore può eliminarlo
+manualmente dopo avere verificato che tutti i comandi usino il solo `compose.yaml`.
 
 ## 7. Dati da proteggere
 

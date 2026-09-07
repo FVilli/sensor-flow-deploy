@@ -6,9 +6,7 @@ services:
 
   rabbitmq:
     hostname: sensor-flow-rabbitmq
-    build:
-      context: .
-      dockerfile: docker/rabbitmq/Dockerfile
+    image: ghcr.io/fvilli/sensor-flow-rabbitmq:stable
     environment:
       RABBITMQ_DEFAULT_USER: sensor_flow
       RABBITMQ_DEFAULT_PASS: sensor_flow_dev
@@ -28,9 +26,7 @@ services:
     restart: unless-stopped
 
   grafana:
-    build:
-      context: .
-      dockerfile: docker/grafana/Dockerfile
+    image: ghcr.io/fvilli/sensor-flow-grafana:stable
     environment:
       GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
       GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: "false"
@@ -86,9 +82,7 @@ services:
 ##############################################################################################
 
   config-manager:
-    build:
-      context: .
-      dockerfile: docker/config-manager.Dockerfile
+    image: ghcr.io/fvilli/sensor-flow-config-manager:stable
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -104,9 +98,7 @@ services:
     restart: unless-stopped
 
   queue-manager:
-    build:
-      context: .
-      dockerfile: docker/queue-manager.Dockerfile
+    image: ghcr.io/fvilli/sensor-flow-queue-manager:stable
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -115,9 +107,7 @@ services:
     restart: unless-stopped
 
   raw-writer:
-    build:
-      context: .
-      dockerfile: docker/raw-writer.Dockerfile
+    image: ghcr.io/fvilli/sensor-flow-raw-writer:stable
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -130,9 +120,7 @@ services:
     restart: unless-stopped
 
   db-writer-migrate:
-    build:
-      context: .
-      dockerfile: docker/db-writer.Dockerfile
+    image: ghcr.io/fvilli/sensor-flow-db-writer:stable
     command: ["node", "dist/apps/db-writer/apps/db-writer/src/main.js", "migrate"]
     depends_on:
       postgres:
@@ -142,9 +130,7 @@ services:
     restart: "no"
 
   db-writer:
-    build:
-      context: .
-      dockerfile: docker/db-writer.Dockerfile
+    image: ghcr.io/fvilli/sensor-flow-db-writer:stable
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -171,9 +157,7 @@ services:
 # operativa host-local.
 
   mqtt-ingress-relay:
-    build:
-      context: .
-      dockerfile: docker/mqtt-ingress-relay.Dockerfile
+    image: ghcr.io/fvilli/sensor-flow-mqtt-ingress-relay:stable
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -185,3 +169,7 @@ volumes:
   grafana-data:
   rabbitmq-data:
   postgres-data:
+
+networks:
+  default:
+    name: sensor-flow

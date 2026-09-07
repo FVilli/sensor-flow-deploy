@@ -1,59 +1,60 @@
 {
   "schemaVersion": 1,
   "channel": "stable",
-  "revision": 21,
-  "gitCommit": "8e3040348856943659209db63e07edc7a8a4ac7f",
-  "publishedAt": "2026-09-06T07:39:03+00:00",
-  "sharedHash": "7260c66e744a8337817d64fc580a338b8225a03d22b6392b1917177498994a68",
+  "revision": 22,
+  "gitCommit": "9bd74706b13107a638d023868e785f2de4ba100f",
+  "publishedAt": "2026-09-07T15:21:29+00:00",
+  "sharedHash": "18e7de38d75fabe26295c6a2c3203da786472373610a366a11314ff689bb8802",
   "deployment": {
+    "strategy": "single-compose-stable",
     "compose": {
       "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/compose.yaml",
-      "sha256": "c88d531408a237099538bdd6007095db1b30e00d09bb469455d1bc2c7d90a9b3"
+      "sha256": "3d2283e55b0d40204b8e171c3eb20e4781a9168aef415b5c3d4cad6e7164026c"
     },
     "updater": {
       "url": "https://raw.githubusercontent.com/FVilli/sensor-flow-deploy/main/update.sh",
-      "sha256": "1b65f8c9d9ef226948377e75f47808b4f7ce952dc4d0ead008781f2debf964ab"
+      "sha256": "7bad05bae854d4e09342456c26b7e48eef9151ff715fe1c877c43f323f152886"
     }
   },
   "services": {
     "rabbitmq": {
       "image": "ghcr.io/fvilli/sensor-flow-rabbitmq",
-      "digest": "sha256:4bdb404b0b05328aeb2c887a403bf9c5a47c68dbdb0201d636b2417fdd94afbf",
+      "digest": "sha256:b7672fca17128dc7427872f8ddb03ea9b12400bb867cb86547c6e9589e54aca2",
       "appHash": "083923f23d99cd30f4c960ecd13bfe11db15cccb9cfe4421e442fad705b60a99"
     },
     "config-manager": {
       "image": "ghcr.io/fvilli/sensor-flow-config-manager",
-      "digest": "sha256:8b23d1d72fb970acf33344e97a1d34603e4839c510017438cfca03debc0d2db0",
+      "digest": "sha256:b3a277f3d55e7af267906c6357f4a8d9a831577bc13907a200e9beb1e41de425",
       "appHash": "5697359bbfc543fa208a582b2d9f1381e3ba4d102f54af2aa6c7e11f00cca2d0"
     },
     "queue-manager": {
       "image": "ghcr.io/fvilli/sensor-flow-queue-manager",
-      "digest": "sha256:900a2e26eed7391ae3e26de3891a57b0b8988870bddf2619f3a73bc94f702366",
+      "digest": "sha256:47182f29d0329c8ecf73eb14aed2a7698fc693a4d78318480c8897ca8d71d0bf",
       "appHash": "68ce722c55b61aa24bd1957384871e16dcec452a8077e8013ec49363c59bde87"
     },
     "mqtt-ingress-relay": {
       "image": "ghcr.io/fvilli/sensor-flow-mqtt-ingress-relay",
-      "digest": "sha256:783a2bbf7bde156b41b50ff37db0f03b20219d99b29bb9d3a43f34e7cd8b3527",
+      "digest": "sha256:496f37b536c1e6ae17c202c964342060dce7fc34bc1b4e34b8d2edfe1f302cc9",
       "appHash": "a25c75ffd76880d31bd593f969c7ad9c568f3166ef895dd8b3aaf20eca9968f1"
     },
     "raw-writer": {
       "image": "ghcr.io/fvilli/sensor-flow-raw-writer",
-      "digest": "sha256:a03c60ab83cf7f97eb336eac1f49c560067c0c480e5137946a76129ff9f60e04",
+      "digest": "sha256:513a75bad6f37d7fe0cbd5d70b1aa6a9a49de9f0dc260f2549cf4f0d62a128ac",
       "appHash": "b32b70e605f2df47eacc0738f48bd1bf4c89c1216b24bcd27096c82dac636283"
     },
     "db-writer": {
       "image": "ghcr.io/fvilli/sensor-flow-db-writer",
-      "digest": "sha256:b65d80c52b501e8d1e82fd65c7df1f8c3e60329e3c307cf69e05c49f03509126",
+      "digest": "sha256:b1a5140b9c985bb7ef9b3342e101d7657c1bead5208fa224fe8eeb863ddbc5ba",
       "appHash": "97ac3cee5c8a5d2835ddce6c6e2a7c8dbe9e81600d61160b339a4cd86706a061"
     },
     "db-writer-migrate": {
       "image": "ghcr.io/fvilli/sensor-flow-db-writer",
-      "digest": "sha256:b65d80c52b501e8d1e82fd65c7df1f8c3e60329e3c307cf69e05c49f03509126",
+      "digest": "sha256:b1a5140b9c985bb7ef9b3342e101d7657c1bead5208fa224fe8eeb863ddbc5ba",
       "appHash": "97ac3cee5c8a5d2835ddce6c6e2a7c8dbe9e81600d61160b339a4cd86706a061"
     },
     "grafana": {
       "image": "ghcr.io/fvilli/sensor-flow-grafana",
-      "digest": "sha256:45f1ab264fff1489cb7f3289395ace9f27d6f0311fb4b83086db74ba0ed0ff5c",
+      "digest": "sha256:76e01e82658bba3b3f2b2e9d1c3da51f8dbc4f5a564e29957a9d3dea9e9f3f8e",
       "appHash": "25c550f325d4aa1bff22ade010e417c360de3e984b655f70a21a27377bcdb261"
     }
   }

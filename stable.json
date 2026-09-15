@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "channel": "stable",
-  "revision": 30,
-  "gitCommit": "3e8e2d359693233224c472eba528ad221bfb4fe7",
-  "publishedAt": "2026-09-15T11:10:24+00:00",
+  "revision": 31,
+  "gitCommit": "ffd80c522d44caa39a89791700067aaabf60fe85",
+  "publishedAt": "2026-09-15T12:15:58+00:00",
   "sharedHash": "18e7de38d75fabe26295c6a2c3203da786472373610a366a11314ff689bb8802",
   "deployment": {
     "strategy": "single-compose-stable",

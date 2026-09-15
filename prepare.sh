@@ -44,6 +44,7 @@ if [[ -f "$environment_file" ]]; then
 else
   cat > "$environment_file" <<'EOF'
 {
+  "adminApiPublicUrl": "http://localhost:8081",
   "topic": "sensor-flow/config/desired/mqtt-ingress-relay",
   "payload": {
     "schemaVersion": 1,

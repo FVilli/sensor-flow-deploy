@@ -52,6 +52,7 @@ reali del broker MQTT. La struttura è:
 
 ```json
 {
+  "adminApiPublicUrl": "http://localhost:8081",
   "topic": "sensor-flow/config/desired/mqtt-ingress-relay",
   "payload": {
     "schemaVersion": 1,
@@ -72,6 +73,15 @@ reali del broker MQTT. La struttura è:
   }
 }
 ```
+
+`adminApiPublicUrl` è opzionale: `db-writer` la legge a ogni avvio e la copia nella
+tabella `public_settings`, da cui la dashboard `Sensor Flow · Gestione
+utenti-sensori` la recupera automaticamente, senza doverla digitare a mano nel
+browser. Il valore predefinito `http://localhost:8081` va bene finché `admin-api`
+è raggiunta solo via tunnel SSH; se viene esposta pubblicamente (vedi
+[guida all'esposizione dei servizi](guides/service-exposure.md)), sostituirlo con
+l'URL pubblico reale e riavviare `db-writer` perché la modifica sia applicata
+(`docker compose -f compose.yaml restart db-writer`).
 
 Verificare il JSON e i permessi dopo la modifica:
 
@@ -121,8 +131,8 @@ systemctl --user list-timers sensor-flow-update.timer
 jq '{revision, gitCommit}' .sensor-flow/applied.json
 ```
 
-RabbitMQ, PostgreSQL e Grafana devono risultare `healthy`; gli altri servizi
-`running` (`db-writer-migrate` termina con successo ed esce, non resta
+RabbitMQ, PostgreSQL, Grafana e `admin-api` devono risultare `healthy`; gli altri
+servizi `running` (`db-writer-migrate` termina con successo ed esce, non resta
 `running`: è un passo one-shot che precede `db-writer`).
 
 Log e code:
@@ -169,15 +179,18 @@ introdotte nella milestone successiva. Un'esposizione tramite reverse proxy deve
 essere configurata esplicitamente con TLS e autenticazione adeguata.
 
 Una guida opzionale descrive come
-[usare Traefik per esporre selettivamente i servizi](guides/traefik-service-exposure.md).
-Traefik e la relativa configurazione restano posseduti dall'host e non vengono
-applicati dall'updater Sensor Flow.
+[esporre selettivamente i servizi](guides/service-exposure.md) tramite un reverse
+proxy dell'host (Traefik, Caddy, Nginx...). Il reverse proxy e la relativa
+configurazione restano posseduti dall'host e non vengono applicati dall'updater
+Sensor Flow.
 
 `node-api` oggi non fa parte dello stack installato da questa guida. Quando verrà
 abilitato, possiederà le proprie migrazioni e genererà al primo avvio il token
 bootstrap in `volumes/config/node-api.token`; il token non appartiene a
-`env.json`. La web app di amministrazione basata su `admin-api` arriverà in un
-secondo momento.
+`env.json`. `admin-api` è invece già inclusa, ma solo per la superficie stretta di
+gestione delle associazioni utente-sensore (vedi `docs/09-GRAFANA_UI.md`); i suoi
+endpoint non richiedono autenticazione applicativa, quindi esporli pubblicamente
+va deciso consapevolmente (vedi la guida all'esposizione).
 
 Fino alla versione maggiore 1, PostgreSQL è esposto soltanto sul loopback
 dell'istanza come supporto a debug e operatività iniziale:

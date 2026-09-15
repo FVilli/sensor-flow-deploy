@@ -47,7 +47,7 @@ else
   "adminApiPublicUrl": "http://localhost:8081",
   "topic": "sensor-flow/config/desired/mqtt-ingress-relay",
   "payload": {
-    "schemaVersion": 1,
+    "schemaVersion": 2,
     "brokers": [
       {
         "name": "CHANGE_ME",

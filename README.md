@@ -7,9 +7,7 @@ Questo repository contiene gli artefatti pubblici usati dalle istanze Sensor Flo
 - `update.sh`: riconciliazione automatica selettiva tramite i digest del manifest;
 - `prepare.sh`: prepara il filesystem locale di una nuova istanza;
 - `bootstrap.sh`: bootstrap idempotente di una nuova istanza;
-- `SHA256SUMS`: checksum degli asset;
-- `INSTANCE_SETUP.md`: installazione di una nuova istanza.
-- `guides/`: integrazioni opzionali possedute dall'host, non applicate dall'updater.
+- `SHA256SUMS`: checksum degli asset.
 
 Il codice sorgente applicativo resta nel repository privato. Le immagini sono
 pubbliche e il Compose le referenzia tramite il tag mobile `stable`; i digest

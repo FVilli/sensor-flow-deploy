@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "channel": "stable",
-  "revision": 43,
-  "gitCommit": "ab0b3f8a0c8cd16f6b3118ab2726f3b616c69748",
-  "publishedAt": "2026-09-24T09:54:30+00:00",
+  "revision": 44,
+  "gitCommit": "75d345a33e35bf01c34aa4104e4cfe9723b42074",
+  "publishedAt": "2026-09-24T13:14:33+00:00",
   "sharedHash": "c6022b5e84c57d419ff5998d9f81c78ab8b1604a1dd164d4c664be340991132f",
   "deployment": {
     "strategy": "single-compose-stable",
@@ -44,13 +44,13 @@
     },
     "db-writer": {
       "image": "ghcr.io/fvilli/sensor-flow-db-writer",
-      "digest": "sha256:088fdc3227c74b1e5e81b7fc68f8159b1b51e797cff210acec587946952f700e",
-      "appHash": "dca37688964068123bf9fa0df1dd16b92a1b8f49f25aa53c5b3bb8efca3a65cb"
+      "digest": "sha256:58b34a03d63a4cf44530b23401f7c7b85f06ffa3fe49f2118d55a9c346918198",
+      "appHash": "a2a7bc73744c82e269eb9adb4c1eaada23d98613f5046b34be203cbe56b618b3"
     },
     "db-writer-migrate": {
       "image": "ghcr.io/fvilli/sensor-flow-db-writer",
-      "digest": "sha256:088fdc3227c74b1e5e81b7fc68f8159b1b51e797cff210acec587946952f700e",
-      "appHash": "dca37688964068123bf9fa0df1dd16b92a1b8f49f25aa53c5b3bb8efca3a65cb"
+      "digest": "sha256:58b34a03d63a4cf44530b23401f7c7b85f06ffa3fe49f2118d55a9c346918198",
+      "appHash": "a2a7bc73744c82e269eb9adb4c1eaada23d98613f5046b34be203cbe56b618b3"
     },
     "grafana": {
       "image": "ghcr.io/fvilli/sensor-flow-grafana",
@@ -59,8 +59,8 @@
     },
     "admin-api": {
       "image": "ghcr.io/fvilli/sensor-flow-admin-api",
-      "digest": "sha256:101df4ca737c323c01374473481b5f5e944e0cffe61f486a3858e772ab46781e",
-      "appHash": "23713a5f85b44cb91f70b7d96b57ef2ed75876a3e18267843a008f64bde9a82a"
+      "digest": "sha256:b55625d3825eb67af07debfc0faeacaafa4d6a6c6d1da8abcd4e070852382496",
+      "appHash": "8fddf127ee7ebbeff6215d8b0ff4cc837867528d9902c76aef83c187d3d67c78"
     },
     "health-agent": {
       "image": "ghcr.io/fvilli/sensor-flow-health-agent",
@@ -69,8 +69,8 @@
     },
     "communication-service": {
       "image": "ghcr.io/fvilli/sensor-flow-communication-service",
-      "digest": "sha256:a1dd8e9f0920e62271b4b441bcb0b8462abc642ed84b8910bcc8d234385fbbcb",
-      "appHash": "86f63e754aad6e3f997d488019818b827458058c424b149188198e81f619aca1"
+      "digest": "sha256:877b95202c38a5811abaef369deb0e862239b3fb2b7f6d358ed4f7d3fc2c7225",
+      "appHash": "6999029d8bb5ef1b3844c838f0cd87bf135410736a7c5a48630c729dcdfb81b9"
     },
     "health-probe-system": {
       "image": "ghcr.io/fvilli/sensor-flow-health-probe-system",

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "channel": "stable",
-  "revision": 42,
-  "gitCommit": "e5c248f75d8b5ceb04470d7fe924f65ecf1a83d3",
-  "publishedAt": "2026-09-24T09:42:18+00:00",
+  "revision": 43,
+  "gitCommit": "ab0b3f8a0c8cd16f6b3118ab2726f3b616c69748",
+  "publishedAt": "2026-09-24T09:54:30+00:00",
   "sharedHash": "c6022b5e84c57d419ff5998d9f81c78ab8b1604a1dd164d4c664be340991132f",
   "deployment": {
     "strategy": "single-compose-stable",
@@ -44,13 +44,13 @@
     },
     "db-writer": {
       "image": "ghcr.io/fvilli/sensor-flow-db-writer",
-      "digest": "sha256:268b1f457f61a74be8acf6f5e4d9588a525be8d84701e6babcc9f57fada98bdf",
-      "appHash": "1f3c96e15ca2412efcc032c495bb8acd4f5e3aa397b4f881680690b6dca035f0"
+      "digest": "sha256:088fdc3227c74b1e5e81b7fc68f8159b1b51e797cff210acec587946952f700e",
+      "appHash": "dca37688964068123bf9fa0df1dd16b92a1b8f49f25aa53c5b3bb8efca3a65cb"
     },
     "db-writer-migrate": {
       "image": "ghcr.io/fvilli/sensor-flow-db-writer",
-      "digest": "sha256:268b1f457f61a74be8acf6f5e4d9588a525be8d84701e6babcc9f57fada98bdf",
-      "appHash": "1f3c96e15ca2412efcc032c495bb8acd4f5e3aa397b4f881680690b6dca035f0"
+      "digest": "sha256:088fdc3227c74b1e5e81b7fc68f8159b1b51e797cff210acec587946952f700e",
+      "appHash": "dca37688964068123bf9fa0df1dd16b92a1b8f49f25aa53c5b3bb8efca3a65cb"
     },
     "grafana": {
       "image": "ghcr.io/fvilli/sensor-flow-grafana",

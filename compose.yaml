@@ -251,6 +251,8 @@ services:
         condition: service_healthy
       config-manager:
         condition: service_healthy
+    volumes:
+      - ./volumes/config:/data/config
     restart: unless-stopped
 
 volumes:

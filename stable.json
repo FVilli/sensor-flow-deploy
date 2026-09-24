@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "channel": "stable",
-  "revision": 40,
-  "gitCommit": "14a7cad35dd649c7d5ddeeb8916a00813839dd19",
-  "publishedAt": "2026-09-23T13:39:02+00:00",
-  "sharedHash": "b7a37dd69eb7ceae960eeeab20651bd270d3792d03f5bd6df933c0d1d80529c2",
+  "revision": 41,
+  "gitCommit": "eb9ecbb2273190513495b16262769e378aab3478",
+  "publishedAt": "2026-09-24T08:13:17+00:00",
+  "sharedHash": "c6022b5e84c57d419ff5998d9f81c78ab8b1604a1dd164d4c664be340991132f",
   "deployment": {
     "strategy": "single-compose-stable",
     "compose": {
@@ -24,68 +24,68 @@
     },
     "config-manager": {
       "image": "ghcr.io/fvilli/sensor-flow-config-manager",
-      "digest": "sha256:c59f100e5ecf1097871690467c9ebc6c8b4d86597b61cacb0eecf338e8c4541d",
-      "appHash": "dbdfcd0533c933be892fd8911e6e2292beaaa50010a45c1c6af889b3fae4aceb"
+      "digest": "sha256:2b902834696dd8314d88e9d4d18acf0f630d3b9a0d9e1d36da0244af66dffc65",
+      "appHash": "fd5dc0768191c61b302e2539c416b7078f89060666f157394e0dfcda2acdba14"
     },
     "queue-manager": {
       "image": "ghcr.io/fvilli/sensor-flow-queue-manager",
-      "digest": "sha256:5416473ee74f725683c3a53b424c2dc9e964ba34d65a14f1c0d32dc9ef577e15",
-      "appHash": "68ce722c55b61aa24bd1957384871e16dcec452a8077e8013ec49363c59bde87"
+      "digest": "sha256:a3bd8844d28c1ca0b54f104a3fee5790659adaa5142a032bbbd8fef02ef56eaf",
+      "appHash": "7dd56264c8a438540822e2be3ad66f980017ccbe9ecfc008cdb19ba45dc59e6f"
     },
     "mqtt-ingress-relay": {
       "image": "ghcr.io/fvilli/sensor-flow-mqtt-ingress-relay",
-      "digest": "sha256:ba6a6543ec2fd787e8168ce298bec64912e54d88dc58d11449793f3e8b66f22c",
-      "appHash": "a25c75ffd76880d31bd593f969c7ad9c568f3166ef895dd8b3aaf20eca9968f1"
+      "digest": "sha256:84e47e5b9f0b044b7ba73992febbe3e194e3ae2086b62ea4cc1823dd03b3c295",
+      "appHash": "2091e098be8b420f10b8fd32506227f37eebe4c59004e0c1fdbfdefe8c904444"
     },
     "raw-writer": {
       "image": "ghcr.io/fvilli/sensor-flow-raw-writer",
-      "digest": "sha256:44e1de2cb611ab02cfcb4b30551abb0b9ee7bd38210fa7558c12c02581ef78c9",
-      "appHash": "b32b70e605f2df47eacc0738f48bd1bf4c89c1216b24bcd27096c82dac636283"
+      "digest": "sha256:5250fd708d8c25f9573edebefa03e7a4fcc5e6fdd8dc2c6cf1c0c3033e2ad875",
+      "appHash": "d7cab38469ac4bc7c2cc3b8d1acf2bdaa369e265471d27aa9430976ba9c9b45f"
     },
     "db-writer": {
       "image": "ghcr.io/fvilli/sensor-flow-db-writer",
-      "digest": "sha256:9eb1d959dce1a7611c9c6100aad40379564f13a740861d9258190350a3f8e515",
-      "appHash": "d83d184f9e8c29bccc678121bf26883310a290a67e2dab7570db34a51a80e158"
+      "digest": "sha256:6d40bc35f77efcaf40240eae3c97ed6097aeb1b0738e74c2ed9fa70240b03a2f",
+      "appHash": "83102fe6c58f178263b02ad91491408b0e7b0eb854fe040a5a6159434140a874"
     },
     "db-writer-migrate": {
       "image": "ghcr.io/fvilli/sensor-flow-db-writer",
-      "digest": "sha256:9eb1d959dce1a7611c9c6100aad40379564f13a740861d9258190350a3f8e515",
-      "appHash": "d83d184f9e8c29bccc678121bf26883310a290a67e2dab7570db34a51a80e158"
+      "digest": "sha256:6d40bc35f77efcaf40240eae3c97ed6097aeb1b0738e74c2ed9fa70240b03a2f",
+      "appHash": "83102fe6c58f178263b02ad91491408b0e7b0eb854fe040a5a6159434140a874"
     },
     "grafana": {
       "image": "ghcr.io/fvilli/sensor-flow-grafana",
-      "digest": "sha256:c762f02f1e21d3faff1b4d6dcc0f53abc4cbe2205bc138a8a70d206f8f0b58f2",
-      "appHash": "ffb3e6250ff158ee777098bcd1b01c82ff3cb02d178c60d0b2bb70bb8f5e9f02"
+      "digest": "sha256:b6b198bbc1b54338f2d4a4c16eaf6557eb5f92c3e05239dd52b57a07bb8e85fd",
+      "appHash": "b83793abc40d4452e0cac6887a1f01103319f0505d03ae8a06628496c97c944a"
     },
     "admin-api": {
       "image": "ghcr.io/fvilli/sensor-flow-admin-api",
-      "digest": "sha256:3baba8c4dfe438ea067a3a3379e0fd3c854b53cd8fbf4e62a14ccfe4b36c54d0",
-      "appHash": "44163594da47b8b7637e85dc6b88f8717bbd69ea91f43228a5610aaead2e55d3"
+      "digest": "sha256:0a1ea94b4df33b3f223af0283368fa5c6b5c0be179421b5947b3377a87f971b7",
+      "appHash": "ae72287a20209ac62099bb0d9e72e01a4cb1d2e06bcb1aacc36eb1ff79fa749c"
     },
     "health-agent": {
       "image": "ghcr.io/fvilli/sensor-flow-health-agent",
-      "digest": "sha256:a30eb29b17bc31cbcd955d32ebcb1d1f188c68bdb428ecf51e3b8d6a263d1bb2",
-      "appHash": "a5c1e1608707c625ad82c34a6962405b624478c475d2487ae65b16d7a5807032"
+      "digest": "sha256:dfabea205bf153bc19a5f03db18ee50cb628af081857de6b40bdbe1161cf154f",
+      "appHash": "09794581527fd74f1fa8a181bc24ced68e3621edb0169279e0f0338dbf235c2b"
     },
     "communication-service": {
       "image": "ghcr.io/fvilli/sensor-flow-communication-service",
-      "digest": "sha256:e73bd87a9bdb839a6f1ae9638ff088fa12f4dd3812dc4b43fdd898ad66e8c4db",
-      "appHash": "1f55f2199f64d34c96209afdd30aefa08d110f6fa66836411f3ef5b6c1ea952d"
+      "digest": "sha256:a1dd8e9f0920e62271b4b441bcb0b8462abc642ed84b8910bcc8d234385fbbcb",
+      "appHash": "86f63e754aad6e3f997d488019818b827458058c424b149188198e81f619aca1"
     },
     "health-probe-system": {
       "image": "ghcr.io/fvilli/sensor-flow-health-probe-system",
-      "digest": "sha256:b43a8c8c2b36abbb7af2bc8e56e8a327e97035261deaa86a206f31193d48dfa2",
-      "appHash": "fbc374cce320ac1dd8ebef739e385cd85bb1df928fc2f5e8c59d6a2d27593ffc"
+      "digest": "sha256:3db4a2f17729324e503b319c68facea9f83164a88464d9a39b781189a8da2691",
+      "appHash": "b6bcde39c476f3eb2113436155eb860fe56971f08d9cc49dcb85fc79fb9f48db"
     },
     "health-probe-rabbitmq": {
       "image": "ghcr.io/fvilli/sensor-flow-health-probe-rabbitmq",
-      "digest": "sha256:eb9d3a3bbe9a50a1d80a6bdfa4f9654270c1ec301077bbe7b2286917f38c99e0",
-      "appHash": "553d7ec29911869769d5a3f8d0559e2bbc8974f5372494f0e3f2965a7d18e4cc"
+      "digest": "sha256:1bbb2a78ab0e5537fb0199a4406755c40c4b56b98bd1427d7159d167caeaeba9",
+      "appHash": "0037f44e6fbb774098c1f2854c4ef76a75a081f14408550e7f9c98bc84945b6b"
     },
     "health-probe-postgres": {
       "image": "ghcr.io/fvilli/sensor-flow-health-probe-postgres",
-      "digest": "sha256:658bf39db05870287e24df5bee731b282547ac0759f3ec9d7ff5d771ff82eec5",
-      "appHash": "7e7f2e419ec06a953bb088fbe5e2f73ac260c804a1d62e137d5ffa529af7d93a"
+      "digest": "sha256:550d0058b62b0e1d473886ffeb7fa21e279d6434b537fc6fab0e3ccab01d74cf",
+      "appHash": "e238250c7efdbfed6f7c87f26cc7b0a206bd4e74223dca55cc4d6335de7bdeb0"
     }
   }
 }
